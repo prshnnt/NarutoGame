@@ -2,8 +2,8 @@ import pygame
 import json
 import sys
 
-IMAGE_PATH = "spritesheet.png"
-JSON_PATH = "frames.json"
+IMAGE_PATH = "assets/images/Naruto.png"
+JSON_PATH = "assets/bounding_box/naruto.json"
 SCALE = 3
 FPS = 10
 
@@ -17,7 +17,7 @@ with open(JSON_PATH, "r") as f:
 sheet = pygame.image.load(IMAGE_PATH).convert_alpha()
 
 groups = list(data.keys())
-group_index = 0
+group_index = 4 # till g4 done !
 frame_index = 0
 frames = data[groups[group_index]]
 
@@ -40,6 +40,8 @@ while running:
             running = False
 
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
             if event.key == pygame.K_RIGHT:
                 group_index = (group_index + 1) % len(groups)
                 frames = data[groups[group_index]]
@@ -49,7 +51,7 @@ while running:
                 frames = data[groups[group_index]]
                 frame_index = 0
 
-    if timer > 1000 // FPS:
+    if timer > 5000 // FPS:
         frame_index = (frame_index + 1) % len(frames)
         timer = 0
 
