@@ -17,7 +17,7 @@ with open(JSON_PATH, "r") as f:
 sheet = pygame.image.load(IMAGE_PATH).convert_alpha()
 
 groups = list(data.keys())
-group_index = 10 # till g5 done !
+group_index = 10 # till g9 done !
 frame_index = 0
 frames = data[groups[group_index]]
 
