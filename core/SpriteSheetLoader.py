@@ -18,3 +18,9 @@ def get_frame(sheet,frame,scale) -> pygame.Surface:
     img = img.convert_alpha(img)
     img = pygame.transform.scale(img, (frame["w"]*scale["x"], frame["h"]*scale["y"]))
     return img
+
+def get_frame_list(sheet,frames,scale) -> list:
+    img_list = []
+    for frame in frames:
+        img_list.append(get_frame(sheet,frame,scale))
+    return img_list
