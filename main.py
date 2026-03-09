@@ -1,68 +1,54 @@
-import pygame
-import json
-import sys
+import pygame as pg
+from core.EventHandler import KeyBoardEventHandler
+from core.State import State
+from core.config import *
 
-IMAGE_PATH = "assets/images/Naruto.png"
-JSON_PATH = "assets/bounding_box/naruto.json"
-SCALE = 3
-FPS = 10
 
-pygame.init()
-screen = pygame.display.set_mode((400, 300))
-clock = pygame.time.Clock()
+class Game:
+    def __init__(self):
+        pg.init()
+        self.screen = pg.display.set_mode(WINDOW_SIZE)
+        pg.display.set_caption(WINDOW_TITLE)
+        self.clock = pg.time.Clock()
+        self.running = True
+        self.keyboardevents = KeyBoardEventHandler()
+        self.state = State()
 
-with open(JSON_PATH, "r") as f:
-    data = json.load(f)
 
-sheet = pygame.image.load(IMAGE_PATH).convert_alpha()
+    def init(self):
+        self.keyboardevents.register('keydown', self.on_key_down)
+        self.keyboardevents.register('on_key_pressed', self.on_key_pressed)
+        self.keyboardevents.register('quit', self.on_quit)
 
-groups = list(data.keys())
-group_index = 4 # till g4 done !
-frame_index = 0
-frames = data[groups[group_index]]
+    def on_key_down(self,key):
+        if key == pg.K_ESCAPE:
+            self.running = False
+    def on_key_pressed(self,event):
+        pass
+    def on_quit(self):
+        self.running = False
 
-def get_frame(frame):
-    rect = pygame.Rect(frame["x"], frame["y"], frame["w"], frame["h"])
-    img = pygame.Surface((frame["w"], frame["h"]), pygame.SRCALPHA)
-    img.blit(sheet, (0, 0), rect)
-    img = pygame.transform.scale(img, (frame["w"]*SCALE, frame["h"]*SCALE))
-    return img
+    def update(self):
+        pass
 
-timer = 0
+    def draw(self):
+        pass
 
-running = True
-while running:
-    dt = clock.tick(60)
-    timer += dt
+    def handle_events(self):
+        self.keyboardevents.handle_events()
+        self.keyboardevents.handle_pressed()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    def run(self):
+        self.init()
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                running = False
-            if event.key == pygame.K_RIGHT:
-                group_index = (group_index + 1) % len(groups)
-                frames = data[groups[group_index]]
-                frame_index = 0
-            if event.key == pygame.K_LEFT:
-                group_index = (group_index - 1) % len(groups)
-                frames = data[groups[group_index]]
-                frame_index = 0
+        while self.running:
+            self.handle_events()
+            self.update()
+            self.draw()
+            pg.display.flip()
+            self.clock.tick(60)
+        pg.quit()
 
-    if timer > 5000 // FPS:
-        frame_index = (frame_index + 1) % len(frames)
-        timer = 0
-
-    frame = get_frame(frames[frame_index])
-
-    screen.fill((30, 30, 30))
-    rect = frame.get_rect(center=(200, 150))
-    screen.blit(frame, rect)
-
-    pygame.display.set_caption(f"Animation: {groups[group_index]}  Frame: {frame_index}")
-    pygame.display.flip()
-
-pygame.quit()
-sys.exit()
+if __name__ == "__main__":
+    game = Game()
+    game.run()

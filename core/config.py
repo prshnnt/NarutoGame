@@ -1,0 +1,2 @@
+WINDOW_SIZE = (1280, 720)
+WINDOW_TITLE = "Naruto Game"
