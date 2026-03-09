@@ -25,6 +25,7 @@ class MenuState(State):
         EXIT = 3
     def __init__(self,screen:pg.Surface):
         super().__init__(screen)
+        self.load_layout()
 
 class MainState:
     class MainStates(Enum):
