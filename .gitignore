@@ -1,0 +1,36 @@
+# Python
+# Byte-code files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.so
+
+# Distribution / build files
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+
+# Environments
+venv/
+.venv/
+env/
+.env/
+
+# Editor/OS files (optional, can also be in a global gitignore)
+.DS_Store # macOS
+.vscode/ # VS Code
+.idea/ # PyCharm/IntelliJ
