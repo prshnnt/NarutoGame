@@ -18,9 +18,14 @@ class Game:
         pg.display.set_caption(WINDOW_TITLE)
         self.clock = pg.time.Clock()
         self.running = True
+<<<<<<< HEAD
         self.dt = 0
         self.active_scene = None
         self.scenes:dict[GameScenes, BaseScene] = {}
+=======
+        self.keyboardevents = KeyBoardEventHandler()
+        # self.state = State()
+>>>>>>> 0238a1b1ad401cc22b69d5b99ac9d82db3bd871d
 
 
     def init(self):
