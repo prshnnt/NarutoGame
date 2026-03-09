@@ -1,7 +1,7 @@
 # Python
 # Byte-code files
 *.pyc
-__pycache__/*
+__pycache__/
 *.pyo
 *.pyd
 *.so
