@@ -12,7 +12,7 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         self.keyboardevents = KeyBoardEventHandler()
-        self.state = State()
+        # self.state = State()
 
 
     def init(self):
