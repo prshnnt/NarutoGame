@@ -1,13 +1,16 @@
 import pygame as pg
 
-from core import GameObject
+from core.GameObject import GameObject
 
 class Button(GameObject):
     def __init__(self, x, y, width, height, text, font, bg_color=(200, 200, 200), hover_color=(150, 150, 150), text_color=(0, 0, 0), callback=None):
         super().__init__()
         self.rect = pg.Rect(x, y, width, height)
         self.text = text
-        self.font = font
+        if font is None:
+            self.font = pg.font.Font(None, 32)
+        else:
+            self.font = font
         self.bg_color = bg_color
         self.hover_color = hover_color
         self.text_color = text_color
