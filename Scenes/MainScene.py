@@ -9,7 +9,7 @@ class MenuScene(BaseScene):
     def __init__(self,game , screen: pg.Surface):
         super().__init__(game,screen)
     def init(self):
-        start_button = Button(width_percent(40),height_percent(5),
+        start_button = Button(40,20,
                               50,20,
                               "START",
                               None,

@@ -17,7 +17,6 @@ class Button(GameObject):
     def handle_event(self, event):
         if event.type == pg.MOUSEMOTION:
             self.is_hovered = self.rect.collidepoint(event.pos)
-        
         if event.type == pg.MOUSEBUTTONDOWN:
             if event.button == 1 and self.is_hovered:
                 if self.callback:

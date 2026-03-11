@@ -50,7 +50,6 @@ class Game:
                     return
             self.scenes[self.active_scene].handle_event(event)
 
-
     def run(self):
         self.init()
 
