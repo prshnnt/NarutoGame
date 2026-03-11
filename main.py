@@ -1,9 +1,6 @@
-from cmath import e
-
 import pygame as pg
 import sys
 
-from enum import Enum
 from Scenes.Base import BaseScene
 from Scenes.MenuScene import MenuScene
 from Scenes.GameScene import GameScene
