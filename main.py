@@ -5,7 +5,8 @@ import sys
 
 from enum import Enum
 from Scenes.Base import BaseScene
-from Scenes.MainScene import MenuScene
+from Scenes.MenuScene import MenuScene
+from Scenes.GameScene import GameScene
 from core.config import *
 
 class Game:
@@ -18,12 +19,15 @@ class Game:
         self.running = True
         
         self.active_scene = None
-        self.scenes:dict[GameScenes, BaseScene] = {}
+        self.scenes:dict[MainScenes, BaseScene] = {}
 
 
     def init(self):
-        self.active_scene = GameScenes.MENU
-        self.scenes[GameScenes.MENU] = MenuScene(self,self.screen)
+        self.active_scene = MainScenes.MENU
+        self.scenes[MainScenes.MENU] = MenuScene(self,self.screen)
+        self.scenes[MainScenes.MENU].on_enter()
+        self.scenes[MainScenes.GAME] = GameScene(self,self.screen)
+
 
     def change_scene(self, new_scene):
         self.scenes[self.active_scene].on_exit()

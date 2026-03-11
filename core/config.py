@@ -8,7 +8,7 @@ WINDOW_SIZE = (WIDTH, HEIGHT)
 WINDOW_TITLE = "Naruto Game"
 FPS = 60
 
-class GameScenes(Enum):
+class MainScenes(Enum):
     MENU = 0
     GAME = 1
     OPTIONS = 2
