@@ -18,7 +18,8 @@ class BaseScene:
         pass
 
     def on_exit(self):
-        pass
+        for layer in  ["background", "world", "effects", "ui"]:
+            self.layers[layer].clear()
     def handle_event(self,event):
         for layer in  ["background", "world", "effects", "ui"]:
             for obj in self.layers[layer]:

@@ -24,8 +24,4 @@ class MenuScene(BaseScene):
                               callback=lambda: self.game.change_scene(MainScenes.QUIT))
         self.add_object(start_button,"ui")
         self.add_object(options_button,"ui")
-        self.add_object(quit_button,"ui")
-    def on_exit(self):
-        super().on_exit()
-        self.layers["ui"].clear()
-        
+        self.add_object(quit_button,"ui")     
