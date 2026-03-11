@@ -4,8 +4,6 @@ from Components.Buttons import Button
 from core.config import *
 
 class MenuScene(BaseScene):
-    def __init__(self,game , screen: pg.Surface):
-        super().__init__(game,screen)
     def on_enter(self):
         start_button = Button(width_percent(50)-50, height_percent(12), 100, 50, "START", None,
                               bg_color=YELLOW,
