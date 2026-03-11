@@ -28,7 +28,6 @@ class Game:
         self.scenes[MainScenes.MENU].on_enter()
         self.scenes[MainScenes.GAME] = GameScene(self,self.screen)
 
-
     def change_scene(self, new_scene):
         self.scenes[self.active_scene].on_exit()
         self.active_scene = new_scene
@@ -65,7 +64,6 @@ class Game:
             pg.display.flip()
         pg.quit()
         sys.exit()
-
 
 if __name__ == "__main__":
     game = Game()
