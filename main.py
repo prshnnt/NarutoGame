@@ -4,6 +4,7 @@ import sys
 from Scenes.Base import BaseScene
 from Scenes.MenuScene import MenuScene
 from Scenes.GameScene import GameScene
+from Scenes.OptionScene import OptionScene
 from core.config import *
 
 class Game:
@@ -24,6 +25,8 @@ class Game:
         self.scenes[MainScenes.MENU] = MenuScene(self,self.screen)
         self.scenes[MainScenes.MENU].on_enter()
         self.scenes[MainScenes.GAME] = GameScene(self,self.screen)
+        self.scenes[MainScenes.OPTIONS] = OptionScene(self,self.screen)
+        
 
     def change_scene(self, new_scene):
         self.scenes[self.active_scene].on_exit()
