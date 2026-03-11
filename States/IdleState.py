@@ -6,7 +6,7 @@ from States.JumpState import JumpState
 class IdleState(BaseState):
 
     def enter(self, player):
-        player.vel.x = 0
+        pass
 
     def handle_input(self, player, keys):
 

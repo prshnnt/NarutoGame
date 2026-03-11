@@ -1,5 +1,4 @@
 from Scenes.Base import BaseScene
-import pygame as pg
 from Components.Buttons import Button
 from core.config import *
 
