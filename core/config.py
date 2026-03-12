@@ -2,8 +2,8 @@ import pygame
 from enum import Enum
 
 
-WIDTH = 700
-HEIGHT = 400
+WIDTH = 960
+HEIGHT = 475
 WINDOW_SIZE = (WIDTH, HEIGHT)
 WINDOW_TITLE = "Naruto Game"
 FPS = 60
