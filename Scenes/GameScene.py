@@ -14,3 +14,5 @@ class GameScene(BaseScene):
                               text_color=BLACK,
                               callback=lambda: self.game.change_scene(MainScenes.MENU))
         self.add_object(start_button,"ui")
+    def level_load(self,level):
+        pass
