@@ -22,8 +22,11 @@ class GameScene(BaseScene):
         self.player = Player((SCREEN_WIDTH//2,SCREEN_HEIGHT//2))
 
     def update(self,dt):
-        keys = pg.key.get_pressed()
         self.player.handle_input(keys)
+        self.camera.update(self.player.rect)
+
+        keys = pg.key.get_pressed()
+        super().update(dt)
 
     def scroll_left(self):
         self.scroll -= RUN_SPEED
