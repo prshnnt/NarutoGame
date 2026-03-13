@@ -1,0 +1,20 @@
+{
+    "world_width":1000,
+    "background":{
+        "sprites":[
+        "assets/images/background/plx-1.png",
+        "assets/images/background/plx-2.png",
+        "assets/images/background/plx-3.png",
+        "assets/images/background/plx-4.png",
+        "assets/images/background/plx-5.png"
+        ],
+        "type":"parallax"
+    },
+    
+    "world_layer":{
+        "terrain_sprites":{
+            "1":"assets/images/background/ground.png"
+        }
+
+    }
+}

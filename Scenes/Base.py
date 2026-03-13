@@ -7,6 +7,18 @@ class BaseScene:
     def __init__(self,game,screen:pg.Surface):
         self.game = game
         self.screen:pg.Surface = screen
+        # Scene
+        # ├ background layer
+        # ├ world layer
+        # │   ├ terrain
+        # │   ├ player
+        # │   ├ enemies
+        # │   └ bullets
+        # ├ particle layer
+        # └ ui layer
+        # This ensures:
+        # background → world → effects → UI
+        
         self.layers = {
             "background":[],
             "world":[],

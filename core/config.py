@@ -2,9 +2,11 @@ import pygame
 from enum import Enum
 
 
-WIDTH = 960
-HEIGHT = 475
-WINDOW_SIZE = (WIDTH, HEIGHT)
+SCREEN_WIDTH = 960
+SCREEN_HEIGHT = 475
+GROUND_HEIGHT = 50
+RUN_SPEED = 5
+WINDOW_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 WINDOW_TITLE = "Naruto Game"
 FPS = 60
 
@@ -29,6 +31,6 @@ GREY = (128, 128, 128)
 
 
 def width_percent(val):
-    return val * WIDTH / 100
+    return val * SCREEN_WIDTH / 100
 def height_percent(val):
-    return val * HEIGHT / 100
+    return val * SCREEN_HEIGHT / 100

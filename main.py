@@ -52,6 +52,14 @@ class Game:
                     self.running = False
                     return
             self.scenes[self.active_scene].handle_event(event)
+        keys = pg.key.get_pressed()
+        if keys[pg.K_LEFT]:
+            if self.active_scene == MainScenes.GAME:
+                self.scenes[self.active_scene].scroll_left()
+        if keys[pg.K_RIGHT]:
+            if self.active_scene == MainScenes.GAME:
+                self.scenes[self.active_scene].scroll_right()
+
 
     def run(self):
         self.init()
