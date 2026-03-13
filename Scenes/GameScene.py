@@ -3,11 +3,13 @@ from Components.Buttons import Button
 from core.SpriteSheetLoader import load_sheet
 from core.AssetLoader import AssetLoader
 from core.config import *
+from entities.Player import Player
 
 class GameScene(BaseScene):
     def on_enter(self):
         self.layers = AssetLoader.load_level("assets/levels/level1.json")
         self.world_width = AssetLoader.load_world_width("assets/levels/level1.json")
+        self.player = Player()
         sheets = []
         for i in range(1,6):
             sheets.append(load_sheet(f'assets/images/background/plx-{i}.png'))
