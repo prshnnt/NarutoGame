@@ -1,84 +1,147 @@
-from enum import Enum
+import pygame as pg
+import json
+from core.config import *
 
-import pygame
-from core.SpriteSheetLoader import get_frame_list, load_sheet , load_bounding_box
-from core.config import COLORKEY
-from core.GameObject import GameObject
-
-import pygame
-
+from core.Animator import Animator
+from core.AssetLoader import AssetLoader
 from States.IdleState import IdleState
 
 
+GRAVITY = 800       # pixels per second squared
+MAX_FALL_SPEED = 600
+
 class Player:
-
     def __init__(self, pos):
+        self.x = pos[0]
+        self.y = pos[1]
+        self.rect = pg.Rect(self.x, self.y, 50, 50)
+        self.vel_x = 0
+        self.vel_y = 0
+        # only animator will draw the player and sprites timing and which sprite to play and size will be hard coded
+        self.animator = Animator(self.rect.center)
+        self.animator.play("stance")
+        
+        self.on_ground: bool = False
+        self.speed: int = PLAYER_SPEED         # horizontal speed (px/s)
+        self.jump_force: int = JUMP_FORCE     # initial upward velocity on jump
 
-        self.rect = pygame.Rect(pos[0], pos[1], 40, 60)
+        # --- Stats ---
+        self.health: int = 100
+        self.alive: bool = True
+        self.is_guarding: bool = False
+        self.facing: int = 1           # 1 = right, -1 = left
 
-        self.vel = pygame.Vector2(0, 0)
-
-        self.speed = 250
-        self.jump_force = 450
-        self.gravity = 1000
-
-        self.on_ground = False
-
-        self.state = IdleState()
-        self.state.enter(self)
-
+        # --- Controls (defaults to arrow keys + z/x) ---
         self.controls = {
-            "left": pygame.K_a,
-            "right": pygame.K_d,
-            "jump": pygame.K_SPACE
+            "left":   pg.K_LEFT,
+            "right":  pg.K_RIGHT,
+            "jump":   pg.K_z,
+            "guard":  pg.K_x,
+            "attack": pg.K_a,
         }
 
-        self.keys = None
+        # --- State machine: start in idle ---
+        self.state = None
+        self.change_state(IdleState())
+    # ------------------------------------------------------------------ #
+    #  State machine                                                       #
+    # ------------------------------------------------------------------ #
 
     def change_state(self, new_state):
-
-        self.state.exit(self)
+        """Transition to a new state, calling exit/enter hooks."""
+        if self.state is not None:
+            self.state.exit(self)
         self.state = new_state
         self.state.enter(self)
 
-    def handle_input(self, keys):
-
-        self.keys = keys
-        self.state.handle_input(self, keys)
-
     def update(self, dt):
+        pass
+
+    def draw(self, screen: pg.Surface, scroll: int):
+        """Delegate drawing to current state (which calls animator)."""
+        self.state.draw(self, screen, scroll)
+
+
+
+    # ------------------------------------------------------------------ #
+    #  Core loop                                                           #
+    # ------------------------------------------------------------------ #
+
+    def handle_input(self, keys):
+        if self.alive:
+            self.state.handle_input(self, keys)
+
+    def update(self, dt: float, platforms: list[pg.Rect]):
+        """Update state logic, move the rect, resolve collisions."""
+        if not self.alive:
+            self.state.update(self, dt)
+            return
 
         self.state.update(self, dt)
 
-        # apply gravity
-        self.vel.y += self.gravity * dt
+        # Apply horizontal movement
+        self.rect.x += int(self.vel_x * dt)
 
-        # move
-        self.rect.x += self.vel.x * dt
-        self.rect.y += self.vel.y * dt
+        # Apply vertical movement
+        self.rect.y += int(self.vel_y * dt)
 
-        # ground collision (simple)
-        if self.rect.bottom >= 500:
-            self.rect.bottom = 500
-            self.vel.y = 0
-            self.on_ground = True
+        # Collision detection
+        self.on_ground = False
+        self._resolve_collisions(platforms)
+
+        # Sync animator facing
+        self.animator.facing = self.facing
+        self.animator.update(dt)
+
+        # Keep rect size in sync with current animation frame
+        w, h = self.animator.get_current_frame_size()
+        self.rect.width = w
+        self.rect.height = h
+
+    # ------------------------------------------------------------------ #
+    #  Physics helpers                                                     #
+    # ------------------------------------------------------------------ #
+
+    def apply_gravity(self, dt: float):
+        self.vel_y += GRAVITY * dt
+        if self.vel_y > MAX_FALL_SPEED:
+            self.vel_y = MAX_FALL_SPEED
+
+    def _resolve_collisions(self, platforms: list[pg.Rect]):
+        """Simple AABB collision resolution against a list of platform rects."""
+        for platform in platforms:
+            if self.rect.colliderect(platform):
+                # Falling down — land on top
+                if self.vel_y > 0 and self.rect.bottom - int(self.vel_y * 0.02) <= platform.top + 10:
+                    self.rect.bottom = platform.top
+                    self.vel_y = 0
+                    self.on_ground = True
+                # Jumping up — hit ceiling
+                elif self.vel_y < 0:
+                    self.rect.top = platform.bottom
+                    self.vel_y = 0
+                # Moving right — hit wall
+                elif self.vel_x > 0:
+                    self.rect.right = platform.left
+                # Moving left — hit wall
+                elif self.vel_x < 0:
+                    self.rect.left = platform.right
+
+    # ------------------------------------------------------------------ #
+    #  Combat helpers (called externally by game logic)                   #
+    # ------------------------------------------------------------------ #
+
+    def take_damage(self, amount: int):
+        """Apply damage and switch to HitState or DeadState."""
+        from States.HitState import HitState
+        from States.DeadState import DeadState
+
+        if not self.alive or self.is_guarding:
+            return
+
+        self.health -= amount
+        if self.health <= 0:
+            self.health = 0
+            self.change_state(DeadState())
         else:
-            self.on_ground = False
-
-# class PlayerState(Enum):
-#     STANCE = 0
-#     RUN = 1
-#     JUMP = 2
-#     HIT = 3
-#     DOWN = 4
-#     GUARD = 5
-#     B = 6
-#     B_FORWARD = 7
-#     B_UP = 8
-#     B_DOWN = 9
-#     Y = 10
-#     Y_FORWARD = 11
-#     Y_UP = 12
-#     DASH_ATTACK =13
-#     JUMP_B = 14
-#     JUMP_Y = 15
+            self.change_state(HitState())
