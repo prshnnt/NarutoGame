@@ -1,6 +1,8 @@
 import pygame as pg
 
-class ParallaxLayer:
+from core import GameObject
+
+class ParallaxLayer(GameObject):
     def __init__(self,image:pg.Surface,speed):
         self.image = image
         self.speed = speed
