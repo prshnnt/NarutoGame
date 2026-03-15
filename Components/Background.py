@@ -8,8 +8,8 @@ class Background(pg.sprite.Sprite,GameObject):
         self.rect = image.get_rect()
         self.rect.topleft = (0, 0)
 
-    def update(self, dt):
+    def update(self, game):
         pass
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
+    def draw(self, game):
+        game.screen.blit(self.image, self.rect)

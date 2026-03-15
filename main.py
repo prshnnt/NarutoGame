@@ -18,6 +18,7 @@ class Game:
         
         self.active_scene = None
         self.scenes:dict[MainScenes, BaseScene] = {}
+        self.action = {"left":False,"right":False,"up":False,"down":False,"b":False,"y":False}
 
 
     def init(self):
@@ -51,7 +52,32 @@ class Game:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
                     return
-            self.scenes[self.active_scene].handle_event(event)
+                if event.key == pg.K_LEFT:
+                    self.action["left"] = True
+                if event.key == pg.K_RIGHT:
+                    self.action["right"] = True
+                if event.key == pg.K_UP:
+                    self.action["up"] = True
+                if event.key == pg.K_DOWN:
+                    self.action["down"] = True
+                if event.key == pg.K_b:
+                    self.action["b"] = True
+                if event.key == pg.K_y:
+                    self.action["y"] = True
+            if event.type == pg.KEYUP:
+                if event.key == pg.K_LEFT:
+                    self.action["left"] = False
+                if event.key == pg.K_RIGHT:
+                    self.action["right"] = False
+                if event.key == pg.K_UP:
+                    self.action["up"] = False
+                if event.key == pg.K_DOWN:
+                    self.action["down"] = False
+                if event.key == pg.K_b:
+                    self.action["b"] = False
+                if event.key == pg.K_y:
+                    self.action["y"] = False
+            self.scenes[self.active_scene].handle_action(self.action)
 
     def run(self):
         self.init()

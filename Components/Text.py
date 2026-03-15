@@ -29,5 +29,5 @@ class Text(GameObject):
             self.text = new_text
             self.update_surface()
 
-    def draw(self, screen):
-        screen.blit(self.surface, self.rect)
+    def draw(self, game):
+        game.screen.blit(self.surface, self.rect)

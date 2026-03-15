@@ -1,8 +1,9 @@
 import json,pygame
 
+from Components.ParallaxBackground import ParallaxBackground
 from Components.Background import Background
 from Components.Ground import Ground
-from core.SpriteSheetLoader import load_sheet
+# from core.SpriteSheetLoader import load_sheet
 # from entities import Player
 # Scene
     # ├ background layer
@@ -51,9 +52,9 @@ class AssetLoader:
         }
         with open(path, "r") as f:
             data = json.load(f)
-        for img in data["background"]["sprites"]:
+        for img,speed in zip(data["background"]["sprites"],data["background"]["speeds"]):
             layers["background"].append(
-                Background(load_sheet(img))
+                ParallaxBackground(AssetLoader.load_sheet(img),speed)
                 )
         layers["world"].append(Ground())
         return layers

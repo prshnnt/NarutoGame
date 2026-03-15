@@ -13,8 +13,8 @@ class Ground(pg.sprite.Sprite,GameObject):
             self.image = image
             self.rect = self.image.get_rect(bottomleft=(0,SCREEN_HEIGHT))
 
-    def update(self,dt):
+    def update(self,game):
         pass
 
-    def draw(self,screen):
-        screen.blit(self.image,self.rect)
+    def draw(self,game):
+        game.screen.blit(self.image,self.rect)

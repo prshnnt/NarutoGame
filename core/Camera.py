@@ -5,7 +5,7 @@ class Camera:
     def __init__(self,width,height):
         self.rect = pg.Rect(0,0,width,height)
 
-    def update(self, target):
+    def update(self, target:pg.Rect):
         # Center camera on player X
         self.rect.x = target.centerx - SCREEN_WIDTH // 2
         self.rect.y = target.centery - SCREEN_HEIGHT // 2
@@ -19,4 +19,4 @@ class Camera:
 
 
     def apply(self, rect):
-        return rect.move(-self.rect.x, -self.rect.y)
+        return rect.move(-self.rect.x, 0)

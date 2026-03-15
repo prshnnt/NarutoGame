@@ -19,6 +19,16 @@ class Button(GameObject):
         self.toggled = False
         self.is_hovered = False
 
+    def handle_action(self, action):
+        if self.rect.collidepoint(pg.mouse.get_pos()):
+            self.is_hovered = True
+        else:
+            self.is_hovered = False
+
+        if self.is_hovered and pg.mouse.get_pressed()[0]:
+            if self.callback:
+                self.callback()
+
     def handle_event(self, event):
         if event.type == pg.MOUSEMOTION:
             self.is_hovered = self.rect.collidepoint(event.pos)
@@ -27,7 +37,7 @@ class Button(GameObject):
                 if self.callback:
                     self.callback()
 
-    def update(self, dt):
+    def update(self, game):
         pass
     def set_text(self, text):
         self.text = text
@@ -42,10 +52,10 @@ class Button(GameObject):
 
 
 
-    def draw(self, screen):
+    def draw(self, game):
         color = self.hover_color if self.is_hovered else self.bg_color
-        pg.draw.rect(screen, color, self.rect)
+        pg.draw.rect(game.screen, color, self.rect)
         
         text_surf = self.font.render(self.text, True, self.text_color)
         text_rect = text_surf.get_rect(center=self.rect.center)
-        screen.blit(text_surf, text_rect)
+        game.screen.blit(text_surf, text_rect)

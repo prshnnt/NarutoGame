@@ -5,17 +5,16 @@ class GameObject(ABC):
     """
     A base class for game objects.
     """
-    def handle_event(self,event):
+    def handle_action(self,action):
         pass
     @abstractmethod
-    def update(self, dt):
+    def update(self, scene):
         """
         Updates the game object's state. This method is called once per frame.
-        'dt' is the time in seconds since the last frame.
         """
         pass
     @abstractmethod
-    def draw(self, screen):
+    def draw(self, scene):
         """
          Draws the game object to the screen.
         """

@@ -19,7 +19,7 @@ class BaseScene:
         # This ensures:
         # background → world → effects → UI
         
-        self.layers = {
+        self.layers:dict[str,list[GameObject]] = {
             "background":[],
             "world":[],
             "effects":[],
@@ -32,10 +32,10 @@ class BaseScene:
     def on_exit(self):
         for layer in  ["background", "world", "effects", "ui"]:
             self.layers[layer].clear()
-    def handle_event(self,event):
+    def handle_action(self,action):
         for layer in  ["background", "world", "effects", "ui"]:
             for obj in self.layers[layer]:
-                obj.handle_event(event)
+                obj.handle_action(action)
 
 
     def add_object(self, obj, layer="world"):
@@ -48,11 +48,9 @@ class BaseScene:
     def update(self,dt):
         for layer in  ["background", "world", "effects", "ui"]:
             for obj in self.layers[layer]:
-                obj.update(dt)
+                obj.update(self)
 
     def draw(self):
         for layer in  ["background", "world", "effects", "ui"]:
             for obj in self.layers[layer]:
-                obj.draw(self.screen)
-
-
+                obj.draw(self)
