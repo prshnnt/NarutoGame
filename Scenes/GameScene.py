@@ -10,12 +10,29 @@ import pygame as pg
 class Player(GameObject):
     def __init__(self,pos):
         self.rect = pg.Rect(pos[0],pos[1],50,50)
+        self.rect.bottom = GROUND_HEIGHT
         self.image = pg.Surface((50,50))
         self.image.fill(YELLOW)
         self.direction = 1 # 1 for right and -1 for left
+        self.vel_y = 0
+        self.in_air = True
         self.speed = 5
     def update(self, scene:BaseScene):
-        
+        if self.in_air:
+            self.vel_y += 1
+            if self.vel_y > 10:
+                self.vel_y = 10
+            self.rect.y += self.vel_y
+            if self.rect.bottom >= GROUND_HEIGHT:
+                self.rect.bottom = GROUND_HEIGHT
+                self.in_air = False
+                self.vel_y = 0
+            
+        scene.camera.update(self.rect)
+    def handle_action(self,action):
+        if action["up"] and not self.in_air:
+            self.in_air = True
+            self.vel_y = -JUMP_FORCE
     def handle_event(self):
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] and self.rect.x > 0:

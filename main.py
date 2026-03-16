@@ -42,8 +42,13 @@ class Game:
     def draw(self):
         self.screen.fill((30, 30, 30))
         self.scenes[self.active_scene].draw()
+    
+    def reset_action(self):
+        for key in self.action.keys():
+            self.action[key] = False
 
     def handle_events(self):
+        self.reset_action()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False

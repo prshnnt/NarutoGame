@@ -54,9 +54,6 @@ class Player:
         self.state = new_state
         self.state.enter(self)
 
-    def update(self, dt):
-        pass
-
     def draw(self, screen: pg.Surface, scroll: int):
         """Delegate drawing to current state (which calls animator)."""
         self.state.draw(self, screen, scroll)
