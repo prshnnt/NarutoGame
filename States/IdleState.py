@@ -1,7 +1,4 @@
 from States.Base import BaseState
-from States.RunState import RunState
-from States.JumpState import JumpState
-
 
 class IdleState(BaseState):
 
@@ -9,7 +6,9 @@ class IdleState(BaseState):
         pass
 
     def handle_input(self, player, keys):
-
+        from States.RunState import RunState
+        from States.JumpState import JumpState
+        
         if keys[player.controls["left"]] or keys[player.controls["right"]]:
             player.change_state(RunState())
 

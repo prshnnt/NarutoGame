@@ -1,6 +1,4 @@
 from States.Base import BaseState
-from States.FallState import FallState
-
 
 class JumpState(BaseState):
 
@@ -9,6 +7,6 @@ class JumpState(BaseState):
         player.on_ground = False
 
     def update(self, player, dt):
-
+        from States import FallState
         if player.vel.y > 0:
             player.change_state(FallState())

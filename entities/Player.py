@@ -50,16 +50,8 @@ class Player(GameObject):
 
     def update(self,scene , dt: float):
         """Update state logic, move the rect, resolve collisions."""
+        # self.state.update(self)
         self.animator.update(dt)
-
-    # ------------------------------------------------------------------ #
-    #  Physics helpers                                                     #
-    # ------------------------------------------------------------------ #
-
-    def apply_gravity(self, dt: float):
-        self.vel_y += GRAVITY * dt
-        if self.vel_y > MAX_FALL_SPEED:
-            self.vel_y = MAX_FALL_SPEED
 
     def _resolve_collisions(self, platforms: list[pg.Rect]):
         """Simple AABB collision resolution against a list of platform rects."""

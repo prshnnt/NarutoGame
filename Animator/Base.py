@@ -14,6 +14,7 @@ class Animator:
         self.group = None
         self.frames:dict = {}
         self.frame_index = 0
+        self.prev_time = pg.time.get_ticks()
 
     def load_frames(self,frames:dict):
         self.frames = frames
@@ -24,11 +25,24 @@ class Animator:
 
     def get_current_frame_size(self):
         return self.image.get_size()
-    
-    def update(self,dt):
+    def update_frame(self):
         self.frame_index += 1
         if self.frame_index >= len(self.frames[self.group]):
             self.frame_index = 0
+    def delta_time(self,dt):
+        current_time = pg.time.get_ticks()
+        if current_time - self.prev_time < 200:
+            return False
+        else:
+            self.prev_time = current_time
+            return True
+
+    def update(self,dt):
+        if self.group is None:
+            return
+        if not self.delta_time(dt):
+            return
+        self.update_frame()
         self.image = self.frames[self.group][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.bottomleft = self.player.rect.bottomleft
