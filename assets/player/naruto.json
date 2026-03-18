@@ -1,0 +1,7 @@
+{
+    "name":"Naruto",
+    "sprite_sheet":"assets/images/player/naruto.png",
+    "bounding_box":"assets/bounding_box/naruto.json",
+    "hit_box":[80,50],
+    "position":[50,200]
+}

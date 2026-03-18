@@ -11,9 +11,7 @@ GRAVITY = 800       # pixels per second squared
 MAX_FALL_SPEED = 600
 
 class Player(GameObject):
-    def __init__(self, pos):
-        self.x = pos[0]
-        self.y = pos[1]
+    def __init__(self, pos , hitbox):
         self.rect = pg.Rect(self.x, self.y, 50, 50)
         self.vel_x = 0
         self.vel_y = 0

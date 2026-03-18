@@ -1,8 +1,6 @@
 import json,pygame
-
-from Components.ParallaxBackground import ParallaxBackground
-from Components.Background import Background
-from Components.Ground import Ground
+from Components import ParallaxBackground , Ground
+from entities.Player import Player
 # from core.SpriteSheetLoader import load_sheet
 # from entities import Player
 # Scene
@@ -24,6 +22,9 @@ class AssetLoader:
         return sheet
     @staticmethod
     def load_bounding_box(path:str)->dict:
+        return AssetLoader.load_data(path)
+    @staticmethod
+    def load_data(path:str)->dict:
         with open(path, "r") as f:
             data = json.load(f)
         return data
@@ -64,9 +65,9 @@ class AssetLoader:
             data = json.load(f)
         return data["world_width"]
     @staticmethod
-    def load_player():
-        path = "assets/images/Naruto.png"
-        bb_path = "assets/bounding_box/naruto.json"
-        sheet = AssetLoader.load_sheet(path)
-        bounding_box = AssetLoader.load_bounding_box(bb_path)
-        # player = Player()
+    def load_player(name="naruto"):
+        path = "assets/player/naruto.json"
+        data = AssetLoader.load_data(path)
+        sprite_sheet = AssetLoader.load_sheet(data["sprite_sheet"])
+        bounding_box = AssetLoader.load_bounding_box(data["bounding_box"])
+        player = Player(pygame.Rect(*data["position"],*data["hitbox"]))
