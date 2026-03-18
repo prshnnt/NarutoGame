@@ -29,14 +29,6 @@ class Button(GameObject):
             if self.callback:
                 self.callback()
 
-    def handle_event(self, event):
-        if event.type == pg.MOUSEMOTION:
-            self.is_hovered = self.rect.collidepoint(event.pos)
-        if event.type == pg.MOUSEBUTTONDOWN:
-            if event.button == 1 and self.is_hovered:
-                if self.callback:
-                    self.callback()
-
     def update(self, game):
         pass
     def set_text(self, text):
@@ -49,8 +41,6 @@ class Button(GameObject):
             else:
                 self.toggled = True
                 self.text = self.choice[1]
-
-
 
     def draw(self, game):
         color = self.hover_color if self.is_hovered else self.bg_color

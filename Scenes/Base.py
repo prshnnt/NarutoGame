@@ -51,6 +51,6 @@ class BaseScene:
                 obj.update(self)
 
     def draw(self):
-        for layer in  ["background", "world", "effects", "ui"]:
+        for layer in  ["background", "world", "effects","ui"]:
             for obj in self.layers[layer]:
                 obj.draw(self)

@@ -1,10 +1,13 @@
 from abc import ABC, abstractmethod
-
+import pygame as pg
 
 class GameObject(ABC):
     """
     A base class for game objects.
     """
+    rect: pg.Rect
+    image: pg.Surface
+
     def handle_action(self,action):
         pass
     @abstractmethod

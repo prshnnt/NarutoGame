@@ -1,9 +1,10 @@
 import pygame as pg
 import json
+from States.Base import BaseState
 from core.config import *
 from core.GameObject import GameObject
-from core.Animator import Animator
-from States.IdleState import IdleState
+from Animator.Base import Animator
+# from States.IdleState import IdleState
 
 
 GRAVITY = 800       # pixels per second squared
@@ -11,35 +12,23 @@ MAX_FALL_SPEED = 600
 
 class Player(GameObject):
     def __init__(self, hitbox:pg.Rect):
+        self.rect = hitbox
         self.position = pg.Vector2(hitbox.x,hitbox.y)
-        self.hitbox = hitbox
         self.velocity = pg.Vector2(0,0)
         # only animator will draw the player and sprites timing and which sprite to play and size will be hard coded
-        self.animator = Animator(self.hitbox.center)
-        self.animator.play("stance")
+        self.animator = Animator(self)
         
-        self.on_ground: bool = False
-        self.speed: int = PLAYER_SPEED         # horizontal speed (px/s)
-        self.jump_force: int = JUMP_FORCE     # initial upward velocity on jump
+        self.in_air = True
 
         # --- Stats ---
         self.health: int = 100
         self.alive: bool = True
-        self.is_guarding: bool = False
         self.facing: int = 1           # 1 = right, -1 = left
-
-        # --- Controls (defaults to arrow keys + z/x) ---
-        self.controls = {
-            "left":   pg.K_LEFT,
-            "right":  pg.K_RIGHT,
-            "jump":   pg.K_z,
-            "guard":  pg.K_x,
-            "attack": pg.K_a,
-        }
+        self.dt = 0
 
         # --- State machine: start in idle ---
         self.state = None
-        self.change_state(IdleState())
+        # self.change_state(IdleState())
     # ------------------------------------------------------------------ #
     #  State machine                                                       #
     # ------------------------------------------------------------------ #
@@ -48,49 +37,20 @@ class Player(GameObject):
         """Transition to a new state, calling exit/enter hooks."""
         if self.state is not None:
             self.state.exit(self)
-        self.state = new_state
+        self.state:BaseState= new_state
         self.state.enter(self)
 
-    def draw(self, screen: pg.Surface, scroll: int):
+    def draw(self,scene):
         """Delegate drawing to current state (which calls animator)."""
-        self.state.draw(self, screen, scroll)
-
-
-
-    # ------------------------------------------------------------------ #
-    #  Core loop                                                           #
-    # ------------------------------------------------------------------ #
+        self.animator.draw(scene)
 
     def handle_input(self, keys):
         if self.alive:
             self.state.handle_input(self, keys)
 
-    def update(self, dt: float, platforms: list[pg.Rect]):
+    def update(self,scene , dt: float):
         """Update state logic, move the rect, resolve collisions."""
-        if not self.alive:
-            self.state.update(self, dt)
-            return
-
-        self.state.update(self, dt)
-
-        # Apply horizontal movement
-        self.rect.x += int(self.vel_x * dt)
-
-        # Apply vertical movement
-        self.rect.y += int(self.vel_y * dt)
-
-        # Collision detection
-        self.on_ground = False
-        self._resolve_collisions(platforms)
-
-        # Sync animator facing
-        self.animator.facing = self.facing
         self.animator.update(dt)
-
-        # Keep rect size in sync with current animation frame
-        w, h = self.animator.get_current_frame_size()
-        self.rect.width = w
-        self.rect.height = h
 
     # ------------------------------------------------------------------ #
     #  Physics helpers                                                     #

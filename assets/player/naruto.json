@@ -2,6 +2,7 @@
     "name":"Naruto",
     "sprite_sheet":"assets/images/player/naruto.png",
     "bounding_box":"assets/bounding_box/naruto.json",
-    "hit_box":[80,50],
-    "position":[50,200]
+    "hitbox":[80,50],
+    "position":[50,200],
+    "animations":["stance","run","jump","hit","down","guard","b","b_forward","b_up","b_down","y","y_forward"]
 }

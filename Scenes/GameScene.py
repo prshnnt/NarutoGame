@@ -1,4 +1,3 @@
-from Components import ParallaxBackground
 from Scenes.Base import BaseScene
 from Components.Buttons import Button
 from core import Camera , AssetLoader
@@ -7,7 +6,7 @@ from core.GameObject import GameObject
 # from entities.Player import Player
 import pygame as pg
 
-class Player(GameObject):
+class TestPlayer(GameObject):
     def __init__(self,pos):
         self.rect = pg.Rect(pos[0],pos[1],50,50)
         self.image = pg.Surface((50,50))
@@ -51,20 +50,20 @@ class Player(GameObject):
 
 class GameScene(BaseScene):
     def on_enter(self):
+        self.layers = AssetLoader.load_level("assets/levels/level1.json")
         pause_button = Button(width_percent(1), height_percent(1), 50, 50, "||", None,
                               bg_color=YELLOW,
                               hover_color=PURPLE,
                               text_color=BLACK,
                               callback=lambda: self.game.change_scene(MainScenes.MENU))
         self.add_object(pause_button,"ui")
-        self.layers = AssetLoader.load_level("assets/levels/level1.json")
         self.world_width = AssetLoader.load_world_width("assets/levels/level1.json")
 
         self.camera = Camera(self.world_width,SCREEN_HEIGHT)
         self.scroll = 0
-        self.player = Player((SCREEN_WIDTH//2,SCREEN_HEIGHT//2))
-        self.add_object(self.player,"world")
         # self.player = Player((SCREEN_WIDTH//2,SCREEN_HEIGHT//2))
+        self.player = AssetLoader.load_player()
+        self.add_object(self.player,"world")
     def update(self,dt):
         for layer in  ["background", "world", "effects", "ui"]:
             for obj in self.layers[layer]:
@@ -72,5 +71,5 @@ class GameScene(BaseScene):
                     obj.update(self,dt)
                 else:
                     obj.update(self)
-        self.player.handle_event()
+        # self.player.handle_event()
         self.camera.update(self.player.rect)

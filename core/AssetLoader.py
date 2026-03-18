@@ -71,3 +71,9 @@ class AssetLoader:
         sprite_sheet = AssetLoader.load_sheet(data["sprite_sheet"])
         bounding_box = AssetLoader.load_bounding_box(data["bounding_box"])
         player = Player(pygame.Rect(*data["position"],*data["hitbox"]))
+        frames = {}
+        for group in data["animations"]:
+            frames[group] = AssetLoader.get_frame_list(sprite_sheet,bounding_box[group],{"x":3,"y":3}) # change this and store scale value in naruto.json in player as it may depend on sprite so it has to be hardcoded
+        player.animator.load_frames(frames)
+        player.animator.play("stance")
+        return player
