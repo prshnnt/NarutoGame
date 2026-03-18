@@ -1,5 +1,5 @@
 {
-    "world_width":1000,
+    "world_width":3000,
     "background":{
         "sprites":[
         "assets/images/background/plx-1.png",

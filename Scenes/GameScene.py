@@ -10,21 +10,27 @@ import pygame as pg
 class Player(GameObject):
     def __init__(self,pos):
         self.rect = pg.Rect(pos[0],pos[1],50,50)
-        self.rect.bottom = GROUND_HEIGHT
         self.image = pg.Surface((50,50))
         self.image.fill(YELLOW)
         self.direction = 1 # 1 for right and -1 for left
         self.vel_y = 0
         self.in_air = True
         self.speed = 5
-    def update(self, scene:BaseScene):
+    def update(self, scene:BaseScene,dt):
+        if self.vel_y>0:
+            self.color = GREEN
+        elif self.vel_y<0:
+            self.color = RED
+        else:
+            self.color = YELLOW
+        self.image.fill(self.color)
         if self.in_air:
             self.vel_y += 1
             if self.vel_y > 10:
                 self.vel_y = 10
             self.rect.y += self.vel_y
-            if self.rect.bottom >= GROUND_HEIGHT:
-                self.rect.bottom = GROUND_HEIGHT
+            if self.rect.bottom >= SCREEN_HEIGHT - GROUND_HEIGHT:
+                self.rect.bottom = SCREEN_HEIGHT - GROUND_HEIGHT
                 self.in_air = False
                 self.vel_y = 0
             
@@ -60,7 +66,11 @@ class GameScene(BaseScene):
         self.add_object(self.player,"world")
         # self.player = Player((SCREEN_WIDTH//2,SCREEN_HEIGHT//2))
     def update(self,dt):
-        super().update(dt)
+        for layer in  ["background", "world", "effects", "ui"]:
+            for obj in self.layers[layer]:
+                if obj is self.player:
+                    obj.update(self,dt)
+                else:
+                    obj.update(self)
         self.player.handle_event()
-        self.player.update(self)
         self.camera.update(self.player.rect)

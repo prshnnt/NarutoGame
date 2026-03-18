@@ -19,4 +19,4 @@ class Camera:
 
 
     def apply(self, rect):
-        return rect.move(-self.rect.x, 0)
+        return rect.move(-self.rect.x, -self.rect.y)

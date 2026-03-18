@@ -1,7 +1,7 @@
 import pygame as pg
 import json
 from core.config import *
-
+from core.GameObject import GameObject
 from core.Animator import Animator
 from core.AssetLoader import AssetLoader
 from States.IdleState import IdleState
@@ -10,7 +10,7 @@ from States.IdleState import IdleState
 GRAVITY = 800       # pixels per second squared
 MAX_FALL_SPEED = 600
 
-class Player:
+class Player(GameObject):
     def __init__(self, pos):
         self.x = pos[0]
         self.y = pos[1]
