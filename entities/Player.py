@@ -3,7 +3,6 @@ import json
 from core.config import *
 from core.GameObject import GameObject
 from core.Animator import Animator
-from core.AssetLoader import AssetLoader
 from States.IdleState import IdleState
 
 
@@ -11,12 +10,12 @@ GRAVITY = 800       # pixels per second squared
 MAX_FALL_SPEED = 600
 
 class Player(GameObject):
-    def __init__(self, pos , hitbox):
-        self.rect = pg.Rect(self.x, self.y, 50, 50)
-        self.vel_x = 0
-        self.vel_y = 0
+    def __init__(self, hitbox:pg.Rect):
+        self.position = pg.Vector2(hitbox.x,hitbox.y)
+        self.hitbox = hitbox
+        self.velocity = pg.Vector2(0,0)
         # only animator will draw the player and sprites timing and which sprite to play and size will be hard coded
-        self.animator = Animator(self.rect.center)
+        self.animator = Animator(self.hitbox.center)
         self.animator.play("stance")
         
         self.on_ground: bool = False

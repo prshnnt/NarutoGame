@@ -1,3 +1,5 @@
+from math import e
+
 import pygame as pg
 import sys
 
@@ -18,7 +20,7 @@ class Game:
         
         self.active_scene = None
         self.scenes:dict[MainScenes, BaseScene] = {}
-        self.action = {"left":False,"right":False,"up":False,"down":False,"b":False,"y":False}
+        self.action = {"left":False,"right":False,"up":False,"down":False,"b":False,"y":False,"g":False,"space":False}
 
 
     def init(self):
@@ -69,6 +71,11 @@ class Game:
                     self.action["b"] = True
                 if event.key == pg.K_y:
                     self.action["y"] = True
+                if event.key == pg.K_g:
+                    self.action["g"] = True
+                if event.key == pg.K_SPACE:
+                    self.action["space"] = True
+
             if event.type == pg.KEYUP:
                 if event.key == pg.K_LEFT:
                     self.action["left"] = False
@@ -82,7 +89,12 @@ class Game:
                     self.action["b"] = False
                 if event.key == pg.K_y:
                     self.action["y"] = False
-            self.scenes[self.active_scene].handle_action(self.action)
+                if event.key == pg.K_g:
+                    self.action["g"] = False
+                if event.key == pg.K_SPACE:
+                    self.action["space"] = False
+        
+        self.scenes[self.active_scene].handle_action(self.action)
 
     def run(self):
         self.init()
