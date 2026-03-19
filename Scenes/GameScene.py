@@ -6,6 +6,8 @@ from core.GameObject import GameObject
 # from entities.Player import Player
 import pygame as pg
 
+from entities.Player import Player
+
 class TestPlayer(GameObject):
     def __init__(self,pos):
         self.rect = pg.Rect(pos[0],pos[1],50,50)
@@ -62,14 +64,18 @@ class GameScene(BaseScene):
         self.camera = Camera(self.world_width,SCREEN_HEIGHT)
         self.scroll = 0
         # self.player = Player((SCREEN_WIDTH//2,SCREEN_HEIGHT//2))
-        self.player = AssetLoader.load_player()
+        self.player:Player = AssetLoader.load_player()
         self.add_object(self.player,"world")
+        
     def update(self,dt):
+        # self.player.handle_(pg.key.get_pressed())
         for layer in  ["background", "world", "effects", "ui"]:
             for obj in self.layers[layer]:
                 if obj is self.player:
                     obj.update(self,dt)
                 else:
                     obj.update(self)
-        # self.player.handle_event()
         self.camera.update(self.player.rect)
+
+    def handle_action(self,action):
+        self.player.handle_action(action)

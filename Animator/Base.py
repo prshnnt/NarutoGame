@@ -20,16 +20,20 @@ class Animator:
         self.frames = frames
 
     def play(self,group:str):
+        if self.group == group:
+            return
         self.group = group
-        self.image = self.frames[group][0]
+        self.frame_index = 0
 
     def get_current_frame_size(self):
         return self.image.get_size()
+
     def update_frame(self):
         self.frame_index += 1
         if self.frame_index >= len(self.frames[self.group]):
             self.frame_index = 0
-    def delta_time(self,dt):
+
+    def should_update_frame(self):
         current_time = pg.time.get_ticks()
         if current_time - self.prev_time < 200:
             return False
@@ -40,14 +44,19 @@ class Animator:
     def update(self,dt):
         if self.group is None:
             return
-        if not self.delta_time(dt):
-            return
-        self.update_frame()
+
+        if self.should_update_frame():
+            self.update_frame()
+
         self.image = self.frames[self.group][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.bottomleft = self.player.rect.bottomleft
 
-    def draw(self,scene):
+    def draw(self, scene):
+        if self.image is None:
+            return
+
+        image_to_draw = self.image
         if self.player.facing == -1:
-            self.image = pg.transform.flip(self.image, True, False)
-        scene.screen.blit(self.image, self.rect)
+            image_to_draw = pg.transform.flip(self.image, True, False)
+        scene.screen.blit(image_to_draw, self.rect)

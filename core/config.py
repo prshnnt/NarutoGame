@@ -31,6 +31,16 @@ PINK = (255, 192, 203)
 BROWN = (165, 42, 42)
 GREY = (128, 128, 128)
 
+ALLOWED_KEYS = {
+    "left": pygame.K_LEFT,
+    "right": pygame.K_RIGHT,
+    "up": pygame.K_UP,
+    "down": pygame.K_DOWN,
+    "b": pygame.K_b,
+    "y": pygame.K_y,
+    "g": pygame.K_g,
+    "space": pygame.K_SPACE
+}
 
 def width_percent(val):
     return val * SCREEN_WIDTH / 100

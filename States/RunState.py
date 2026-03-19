@@ -1,27 +1,24 @@
 from States.Base import BaseState
-from States.IdleState import IdleState
-from States.JumpState import JumpState
+from core.config import *
+import pygame as pg
 
 
 class RunState(BaseState):
+    def enter(self, player):
+        player.animator.play("run")
+    def exit(self, player):
+        player.velocity.x = 0
 
-    def handle_input(self, player, keys):
+    def handle_action(self, player, action):
+        if action["left"]:
+            player.velocity.x = -3
+        elif action["right"]:
+            player.velocity.x = 3
+        else:
+            player.velocity.x = 0
+            if not player.in_air:
+                player.change_state("idle")
 
-        if not (keys[player.controls["left"]] or keys[player.controls["right"]]):
-            player.change_state(IdleState())
-
-        if keys[player.controls["jump"]] and player.on_ground:
-            player.change_state(JumpState())
-
-    def update(self, player, dt):
-
-        direction = 0
-
-        keys = player.keys
-
-        if keys[player.controls["left"]]:
-            direction = -1
-        elif keys[player.controls["right"]]:
-            direction = 1
-
-        player.vel.x = direction * player.speed
+        if action["space"] and not player.in_air:
+            player.change_state("jump")
+            return

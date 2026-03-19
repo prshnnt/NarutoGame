@@ -70,10 +70,12 @@ class AssetLoader:
         data = AssetLoader.load_data(path)
         sprite_sheet = AssetLoader.load_sheet(data["sprite_sheet"])
         bounding_box = AssetLoader.load_bounding_box(data["bounding_box"])
-        player = Player(pygame.Rect(*data["position"],*data["hitbox"]))
         frames = {}
         for group in data["animations"]:
-            frames[group] = AssetLoader.get_frame_list(sprite_sheet,bounding_box[group],{"x":3,"y":3}) # change this and store scale value in naruto.json in player as it may depend on sprite so it has to be hardcoded
+            frames[group] = AssetLoader.get_frame_list(sprite_sheet,bounding_box[group],{"x":2.2,"y":2.2}) # change this and store scale value in naruto.json in player as it may depend on sprite so it has to be hardcoded
+            
+        player = Player(data["position"])
         player.animator.load_frames(frames)
-        player.animator.play("stance")
+        player.rect = player.animator.frames["stance"][0].get_rect()
+        player.change_state("idle")
         return player

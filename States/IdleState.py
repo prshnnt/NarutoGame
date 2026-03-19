@@ -1,16 +1,14 @@
 from States.Base import BaseState
 
 class IdleState(BaseState):
-
     def enter(self, player):
-        pass
+        player.animator.play("stance")
+        player.velocity.x = 0
+        player.velocity.y = 0
 
-    def handle_input(self, player, keys):
-        from States.RunState import RunState
-        from States.JumpState import JumpState
-        
-        if keys[player.controls["left"]] or keys[player.controls["right"]]:
-            player.change_state(RunState())
+    def handle_action(self, player,action):
+        if action["left"] or action["right"]:
+            player.change_state("run")
 
-        if keys[player.controls["jump"]] and player.on_ground:
-            player.change_state(JumpState())
+        if action["space"] and (not player.in_air):
+            player.change_state("jump")

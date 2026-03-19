@@ -3,7 +3,7 @@ class BaseState:
         pass
     def exit(self,player):
         pass
-    def handle_input(self,player):
+    def handle_action(self,player,action):
         pass
-    def update(self,player):
+    def update(self,player,dt):
         pass

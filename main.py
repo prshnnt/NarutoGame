@@ -50,7 +50,6 @@ class Game:
             self.action[key] = False
 
     def handle_events(self):
-        self.reset_action()
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False
