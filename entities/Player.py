@@ -5,7 +5,7 @@ from States.Base import BaseState
 from core.config import *
 from core.GameObject import GameObject
 from Animator.Base import Animator
-from States import FallState, IdleState, JumpState, RunState
+from States import FallState, GuardState, IdleState, JumpState, RunState
 
 
 class Player(GameObject):
@@ -20,6 +20,7 @@ class Player(GameObject):
 
         self.health: int = 100
         self.invincible: bool = False
+        self.is_gaurding: bool = False
         self.alive: bool = True
         self.facing: int = 1           # 1 = right, -1 = left
         self.dt = 0
@@ -30,6 +31,7 @@ class Player(GameObject):
             "run": RunState(),
             "jump": JumpState(),
             "fall": FallState(),
+            "guard": GuardState()
         }
         self.state = None # didnt set state because i am setting state in asset loader when asset are loaded
 

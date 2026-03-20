@@ -4,4 +4,4 @@ from States.FallState import FallState
 from States.IdleState import IdleState
 # from States.DeadState import DeadState
 # from States.DownState import DownState
-# from States.GaurdState import GaurdState
+from States.GuardState import GuardState
