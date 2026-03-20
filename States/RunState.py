@@ -11,9 +11,9 @@ class RunState(BaseState):
 
     def handle_action(self, player, action):
         if action["left"]:
-            player.velocity.x = -3
+            player.velocity.x = -RUN_SPEED
         elif action["right"]:
-            player.velocity.x = 3
+            player.velocity.x = RUN_SPEED
         else:
             player.velocity.x = 0
             if not player.in_air:
