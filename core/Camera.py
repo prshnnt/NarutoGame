@@ -18,5 +18,5 @@ class Camera:
         self.rect.y = min(self.rect.y, self.rect.height - SCREEN_HEIGHT)
 
 
-    def apply(self, rect):
-        return rect.move(-self.rect.x, -self.rect.y)
+    def apply(self, rect:pg.Rect):
+        return rect.move(-self.rect.x, 0)
