@@ -12,9 +12,11 @@ class Animator:
         self.image:pg.Surface = None
         self.rect:pg.Rect = self.player.rect
         self.group = None
+        self.just_landed = False
         self.frames:dict = {}
         self.frame_index = 0
         self.prev_time = pg.time.get_ticks()
+        self.frame_stack = []
 
     def load_frames(self,frames:dict):
         self.frames = frames
@@ -35,20 +37,31 @@ class Animator:
 
     def should_update_frame(self):
         current_time = pg.time.get_ticks()
-        if current_time - self.prev_time < 200:
+        if current_time - self.prev_time < 150:
             return False
         else:
             self.prev_time = current_time
             return True
-
+        
     def update(self,dt):
         if self.group is None:
             return
 
         if self.should_update_frame():
             self.update_frame()
-
+        if self.group == "jump":
+            if self.player.velocity.y<0:
+                self.frame_index = 1
+        if self.group == "fall":
+            if self.player.velocity.y>0:
+                self.frame_index = 0
+            if self.player.velocity.y==0:
+                self.just_landed = True
         self.image = self.frames[self.group][self.frame_index]
+        if self.group == "stance":
+            if self.just_landed:
+                self.image = self.frames["fall"][1]
+                self.just_landed = False
         self.rect = self.image.get_rect()
         self.rect.bottomleft = self.player.rect.bottomleft
 
@@ -59,4 +72,4 @@ class Animator:
         image_to_draw = self.image
         if self.player.facing == -1:
             image_to_draw = pg.transform.flip(self.image, True, False)
-        scene.screen.blit(image_to_draw, self.rect)
+        scene.screen.blit(image_to_draw, scene.camera.apply(self.rect))
