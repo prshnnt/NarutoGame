@@ -65,17 +65,18 @@ class GameScene(BaseScene):
         self.scroll = 0
         # self.player = Player((SCREEN_WIDTH//2,SCREEN_HEIGHT//2))
         self.player:Player = AssetLoader.load_player()
-        self.add_object(self.player,"world")
         
     def update(self,dt):
-        # self.player.handle_(pg.key.get_pressed())
         for layer in  ["background", "world", "effects", "ui"]:
             for obj in self.layers[layer]:
-                if obj is self.player:
-                    obj.update(self,dt)
-                else:
+                if obj is not self.player:
                     obj.update(self)
+        self.player.update(self,dt)
         self.camera.update(self.player.rect)
+    def draw(self):
+        super().draw()
+        self.player.draw(self)
+
 
     def handle_action(self,action):
         self.player.handle_action(action)
