@@ -10,6 +10,9 @@ class FallState(BaseState):
     def handle_action(self, player, action):
         keys = pg.key.get_pressed()
         if keys[ALLOWED_KEYS["left"]]:
-            player.velocity.x = -5
+            player.velocity.x = -RUN_SPEED
         if keys[ALLOWED_KEYS["right"]]:
-            player.velocity.x = 5
+            player.velocity.x = RUN_SPEED
+    def update(self, player, dt):
+        if not player.in_air:
+            player.change_state("idle")
