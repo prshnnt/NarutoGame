@@ -1,6 +1,7 @@
 import json,pygame
 from Components import ParallaxBackground , Ground
 from entities.Player import Player
+from core.config import *
 # from core.SpriteSheetLoader import load_sheet
 # from entities import Player
 # Scene
@@ -57,7 +58,10 @@ class AssetLoader:
             layers["background"].append(
                 ParallaxBackground(AssetLoader.load_sheet(img),speed)
                 )
-        layers["world"].append(Ground())
+        for j ,line in enumerate(data["map"]):
+            for i , tile in enumerate(line):
+                 if tile == "1":
+                    layers["world"].append(Ground(TILE_SIZE[0],TILE_SIZE[1],((i-1)*TILE_SIZE[0],(j-1)*TILE_SIZE[1])))
         return layers
     @staticmethod
     def load_world_width(path):
