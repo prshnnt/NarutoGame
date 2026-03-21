@@ -16,7 +16,6 @@ class Animator:
         self.frames:dict = {}
         self.frame_index = 0
         self.prev_time = pg.time.get_ticks()
-        self.frame_stack = []
 
     def load_frames(self,frames:dict):
         self.frames = frames
@@ -57,12 +56,19 @@ class Animator:
                 self.frame_index = 0
             if self.player.velocity.y==0:
                 self.just_landed = True
+
         self.image = self.frames[self.group][self.frame_index]
         if self.group == "stance":
             if self.just_landed:
                 self.image = self.frames["fall"][1]
                 self.just_landed = False
-        self.rect = self.image.get_rect()
+        if self.group == "guard" and self.frame_index==(len(self.frames["guard"])-1):
+            self.frame_index = 2
+            self.image = self.frames["guard"][self.frame_index]
+            
+        if self.rect is None:
+            self.rect = self.image.get_rect()
+        self.rect.size = self.image.get_size()
         self.rect.bottomleft = self.player.rect.bottomleft
 
     def draw(self, scene):
