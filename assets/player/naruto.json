@@ -4,5 +4,5 @@
     "bounding_box":"assets/bounding_box/naruto.json",
     "hitbox":[50,30],
     "position":[50,200],
-    "animations":["stance","run","jump","fall","hit","down","guard","b","b_forward","b_up","b_down","y","y_forward"]
+    "animations":["stance","run","jump","fall","landing","hit","down","guard","b","b_forward","b_up","b_down","y","y_forward"]
 }

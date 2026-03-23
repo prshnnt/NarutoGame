@@ -15,4 +15,5 @@ class FallState(BaseState):
             player.velocity.x = RUN_SPEED
     def update(self, player, dt):
         if not player.in_air:
-            player.change_state("idle")
+            player.change_state("landing")
+        

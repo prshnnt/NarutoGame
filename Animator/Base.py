@@ -12,7 +12,7 @@ class Animator:
         self.image:pg.Surface = None
         self.rect:pg.Rect = self.player.rect
         self.group = None
-        self.just_landed = False
+        self.prev_group = None
         self.frames:dict = {}
         self.frame_index = 0
         self.prev_time = pg.time.get_ticks()
@@ -23,6 +23,7 @@ class Animator:
     def play(self,group:str):
         if self.group == group:
             return
+        self.prev_group = self.group
         self.group = group
         self.frame_index = 0
 
@@ -36,40 +37,23 @@ class Animator:
 
     def should_update_frame(self):
         current_time = pg.time.get_ticks()
-        if current_time - self.prev_time < 150:
+        if current_time - self.prev_time < 500:
             return False
         else:
             self.prev_time = current_time
             return True
-        
-    def update(self,dt):
-        if self.group is None:
-            return
-
-        if self.should_update_frame():
-            self.update_frame()
-        if self.group == "jump":
-            if self.player.velocity.y<0:
-                self.frame_index = 1
-        if self.group == "fall":
-            if self.player.velocity.y>0:
-                self.frame_index = 0
-            if self.player.velocity.y==0:
-                self.just_landed = True
-
-        self.image = self.frames[self.group][self.frame_index]
-        if self.group == "stance":
-            if self.just_landed:
-                self.image = self.frames["fall"][1]
-                self.just_landed = False
-        if self.group == "guard" and self.frame_index==(len(self.frames["guard"])-1):
-            self.frame_index = 2
-            self.image = self.frames["guard"][self.frame_index]
-            
+    def rect_resize(self):
         if self.rect is None:
             self.rect = self.image.get_rect()
         self.rect.size = self.image.get_size()
         self.rect.bottomleft = self.player.rect.bottomleft
+    def update(self,dt):
+        if self.group is None:
+            return
+        if self.should_update_frame():
+            self.update_frame()
+        self.image = self.frames[self.group][self.frame_index]
+        self.rect_resize()
 
     def draw(self, scene):
         if self.image is None:

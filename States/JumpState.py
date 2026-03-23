@@ -9,6 +9,10 @@ class JumpState(BaseState):
         player.animator.frame_index = 0
         player.velocity.y = -JUMP_FORCE
         player.in_air = True
+        player.animator.just_landed = False
+
+    def exit(self, player):
+        player.velocity.y = 0
         
     def handle_action(self, player, action):
         keys = pg.key.get_pressed()

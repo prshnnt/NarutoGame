@@ -5,3 +5,4 @@ from States.IdleState import IdleState
 # from States.DeadState import DeadState
 # from States.DownState import DownState
 from States.GuardState import GuardState
+from States.LandingState import LandingState

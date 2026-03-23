@@ -4,8 +4,8 @@ from Components import Ground
 from States.Base import BaseState
 from core.config import *
 from core.GameObject import GameObject
-from Animator.Base import Animator
-from States import FallState, GuardState, IdleState, JumpState, RunState
+from Animator import NarutoAnimator as Animator
+from States import FallState, GuardState, IdleState, JumpState, RunState, LandingState
 
 
 class Player(GameObject):
@@ -31,7 +31,8 @@ class Player(GameObject):
             "run": RunState(),
             "jump": JumpState(),
             "fall": FallState(),
-            "guard": GuardState()
+            "guard": GuardState(),
+            "landing": LandingState()
         }
         self.state = None # didnt set state because i am setting state in asset loader when asset are loaded
 
