@@ -2,7 +2,24 @@ import pygame as pg
 # from Scenes.Base import BaseScene
 from core.config import *
 from core.GameObject import GameObject
+from pydantic import BaseModel
 # from entities.Player import Player
+
+class FrameState(pg.sprite.Sprite):
+    def __init__(self,image:pg.Surface):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.next_state = None
+        self.prev_state = None
+    def enter(self):
+        pass
+    def exit(self):
+        pass
+    def next(self,state:FrameState):
+        self.exit()
+        state.enter()
+        return state
+
 
 
 class Animator:
