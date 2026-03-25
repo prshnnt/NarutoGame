@@ -58,10 +58,12 @@ class AssetLoader:
             layers["background"].append(
                 ParallaxBackground(AssetLoader.load_sheet(img),speed)
                 )
+        ground = data["world_layer"]["terrain_sprites"]["1"]
+        ground = AssetLoader.load_sheet(ground)
         for j ,line in enumerate(data["map"]):
             for i , tile in enumerate(line):
                  if tile == "1":
-                    layers["world"].append(Ground(TILE_SIZE[0],TILE_SIZE[1],((i-1)*TILE_SIZE[0],(j-1)*TILE_SIZE[1])))
+                    layers["world"].append(Ground(TILE_SIZE[0],TILE_SIZE[1],((i-1)*TILE_SIZE[0],(j-1)*TILE_SIZE[1]),ground))
         return layers
     @staticmethod
     def load_world_width(path):
