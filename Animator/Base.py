@@ -15,7 +15,7 @@ class FrameState(pg.sprite.Sprite):
         pass
     def exit(self):
         pass
-    def next(self,state:FrameState):
+    def next(self,state):
         self.exit()
         state.enter()
         return state
