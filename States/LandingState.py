@@ -11,7 +11,7 @@ class LandingState(BaseState):
 
     def update(self, player, dt):
         # Wait for a short duration to show the landing animation
-        if pg.time.get_ticks() - self.enter_time > 200:
+        if pg.time.get_ticks() - self.enter_time > 100:
             player.change_state("idle")
 
     def handle_action(self, player, action):
