@@ -22,6 +22,5 @@ class Ground(pg.sprite.Sprite,GameObject):
 
     def update(self,game):
         pass
-
     def draw(self,scene):
         scene.screen.blit(self.image,scene.camera.apply(self.rect))
