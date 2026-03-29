@@ -60,7 +60,7 @@ class Game:
                     return
                 if event.key == pg.K_LEFT:
                     self.action["left"] = True
-                if event.key == pg.K_RIGHT:
+                elif event.key == pg.K_RIGHT:
                     self.action["right"] = True
                 if event.key == pg.K_UP:
                     self.action["up"] = True
@@ -78,7 +78,7 @@ class Game:
             if event.type == pg.KEYUP:
                 if event.key == pg.K_LEFT:
                     self.action["left"] = False
-                if event.key == pg.K_RIGHT:
+                elif event.key == pg.K_RIGHT:
                     self.action["right"] = False
                 if event.key == pg.K_UP:
                     self.action["up"] = False

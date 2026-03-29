@@ -48,7 +48,7 @@ class Player(GameObject):
     def handle_action(self, action):
         if action["left"]:
             self.facing = -1
-        if action["right"]:
+        elif action["right"]:
             self.facing = 1
         if self.alive and self.state is not None:
             self.state.handle_action(self,action)

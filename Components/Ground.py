@@ -7,7 +7,7 @@ from core.config import *
 class Ground(pg.sprite.Sprite,GameObject):
     def __init__(self,width,height,pos=(0,SCREEN_HEIGHT-GROUND_HEIGHT),image=None):
         super().__init__()
-        self.image = pg.Surface((width,height))
+        self.image = pg.Surface((width,height),pg.SRCALPHA)
         if image is None:
             self.image.fill(GREEN)
             self.rect = self.image.get_rect(topleft = pos)
