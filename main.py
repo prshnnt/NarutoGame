@@ -14,8 +14,8 @@ class Game:
         self.clock = pg.time.Clock()
 
         self.running = True
-        
         self.active_scene = None
+        
         self.scenes:dict[MainScenes, BaseScene] = {}
         self.action = {"left":False,"right":False,"up":False,"down":False,"b":False,"y":False,"g":False,"space":False}
 
@@ -30,8 +30,6 @@ class Game:
     def change_scene(self, new_scene):
         self.scenes[self.active_scene].on_exit()
         self.active_scene = new_scene
-        # if new_scene not in self.scenes:
-        #     self.scenes[new_scene] = create_scene()
         self.scenes[new_scene].on_enter()
 
     def update(self,dt):
