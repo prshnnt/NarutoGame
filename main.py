@@ -1,8 +1,5 @@
-from math import e
-
 import pygame as pg
 import sys
-
 from Scenes.Base import BaseScene
 from Scenes.MenuScene import MenuScene
 from Scenes.GameScene import GameScene
@@ -21,7 +18,6 @@ class Game:
         self.active_scene = None
         self.scenes:dict[MainScenes, BaseScene] = {}
         self.action = {"left":False,"right":False,"up":False,"down":False,"b":False,"y":False,"g":False,"space":False}
-
 
     def init(self):
         self.active_scene = MainScenes.MENU
