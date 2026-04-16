@@ -33,6 +33,7 @@ class Animator:
         self.frames:dict = {}
         self.frame_index = 0
         self.prev_time = pg.time.get_ticks()
+        self.animation_finished = False
 
     def load_frames(self,frames:dict):
         self.frames = frames
@@ -43,6 +44,7 @@ class Animator:
         self.prev_group = self.group
         self.group = group
         self.frame_index = 0
+        self.animation_finished = False
 
     def get_current_frame_size(self):
         return self.image.get_size()
@@ -50,7 +52,10 @@ class Animator:
     def update_frame(self):
         self.frame_index += 1
         if self.frame_index >= len(self.frames[self.group]):
+            self.animation_finished = True
             self.frame_index = 0
+        else:
+            self.animation_finished = False
 
     def should_update_frame(self):
         current_time = pg.time.get_ticks()
