@@ -9,6 +9,25 @@ class Enemy(Entity):
     """
     Enemy class controlled by AI.
     Inherits shared functionality from Entity.
+
+    Structure:                                                                                                                                   
+    entities/                                                                                                                                      ├── Entity.py    # Base class (shared: position, velocity, health, states, collision)
+    ├── Player.py    # Inherits Entity (keyboard input)                                                                                            ├── Enemy.py     # Inherits Entity (AI control)                                                                                                └── __init__.py  # Package exports                                                                                                                                                                                                                                                            Entity base class:                                                                                                                             - Position, velocity, health, invincibility, facing direction                                                                                  - State machine with enter/exit hooks                                                                                                          - Collision detection (X/Y axis)                                                                                                               - take_damage() method                                                                                                                                                                                                                                                                      
+    Player:
+    - Human control via handle_input(action)
+    - Same states: idle, run, jump, fall, guard, landing
+
+    Enemy:
+    - AI control with aggro range (300px) and attack range (50px)
+    - Chases player, attacks when close, random jumps
+    - set_target(player) to assign target
+
+    Usage:
+    from entities import Player, Enemy
+
+    player = Player((100, 100))
+    enemy = Enemy((400, 100))
+    enemy.set_target(player)
     """
     def __init__(self, pos):
         super().__init__(pos)
