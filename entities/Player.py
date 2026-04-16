@@ -1,9 +1,11 @@
 import pygame as pg
 from entities.Entity import Entity
 from Animator import NarutoAnimator as Animator
-from States import FallState, GuardState, IdleState, JumpState, RunState, LandingState
+from States import (
+    FallState, GuardState, IdleState, JumpState, RunState, LandingState,
+    BAttackState, BForwardState, BUpState, BDownState, YAttackState, YForwardState
+)
 from core.config import *
-
 
 
 class Player(Entity):
@@ -12,6 +14,7 @@ class Player(Entity):
 
         self.animator = Animator(self)
         self.is_gaurding: bool = False
+        self.is_attacking: bool = False
 
         # State machine
         self.states = {
@@ -20,17 +23,30 @@ class Player(Entity):
             "jump": JumpState(),
             "fall": FallState(),
             "guard": GuardState(),
-            "landing": LandingState()
+            "landing": LandingState(),
+            "b": BAttackState(),
+            "b_forward": BForwardState(),
+            "b_up": BUpState(),
+            "b_down": BDownState(),
+            "y": YAttackState(),
+            "y_forward": YForwardState(),
         }
         self.state = None
+        self.prev_state_name = "idle"
 
     def change_state(self, state_name):
         """Transition to a new state, calling exit/enter hooks."""
         print(f"Changing state to {state_name}")
         if self.state is not None:
             self.state.exit(self)
+        self.prev_state_name = state_name
         self.state = self.states[state_name]
         self.state.enter(self)
+
+    def is_in_attack_state(self):
+        """Check if player is currently attacking."""
+        attack_states = ["b", "b_forward", "b_up", "b_down", "y", "y_forward"]
+        return self.prev_state_name in attack_states
 
     def handle_input(self, action):
         """Handle player keyboard input."""
@@ -39,8 +55,33 @@ class Player(Entity):
         elif action["right"]:
             self.facing = 1
 
-        if self.alive and self.state is not None:
-            self.state.handle_action(self, action)
+        if not self.alive or self.state is None:
+            return
+
+        # Attack inputs (priority over movement)
+        if action["b"]:
+            if action["up"]:
+                self.change_state("b_up")
+                return
+            elif action["down"]:
+                self.change_state("b_down")
+                return
+            elif action["right"] or action["left"]:
+                self.change_state("b_forward")
+                return
+            else:
+                self.change_state("b")
+                return
+
+        if action["y"]:
+            if action["right"] or action["left"]:
+                self.change_state("y_forward")
+                return
+            else:
+                self.change_state("y")
+                return
+
+        self.state.handle_action(self, action)
 
     def handle_action(self, action):
         """Alias for handle_input - compatibility with game code."""
