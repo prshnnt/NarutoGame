@@ -6,3 +6,4 @@ from States.IdleState import IdleState
 # from States.DownState import DownState
 from States.GuardState import GuardState
 from States.LandingState import LandingState
+from States.BAttackState import BAttackState, BForwardState, BUpState, BDownState, YAttackState, YForwardState
