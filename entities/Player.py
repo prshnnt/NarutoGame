@@ -36,7 +36,6 @@ class Player(Entity):
 
     def change_state(self, state_name):
         """Transition to a new state, calling exit/enter hooks."""
-        print(f"Changing state to {state_name}")
         if self.state is not None:
             self.state.exit(self)
         self.prev_state_name = state_name

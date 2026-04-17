@@ -3,6 +3,8 @@ import random
 from entities.Entity import Entity
 from Animator import NarutoAnimator as Animator
 from States import FallState, GuardState, IdleState, JumpState, RunState, LandingState
+from States.BAttackState import BAttackState
+from core.config import *
 
 
 class Enemy(Entity):
@@ -44,6 +46,10 @@ class Enemy(Entity):
         self.aggro_range = 300
         self.attack_range = 50
 
+        # Attack settings
+        self.is_attacking: bool = False
+        self.attack_damage: int = 10
+
         # State machine - same states as player
         self.states = {
             "idle": IdleState(),
@@ -51,13 +57,13 @@ class Enemy(Entity):
             "jump": JumpState(),
             "fall": FallState(),
             "guard": GuardState(),
-            "landing": LandingState()
+            "landing": LandingState(),
+            "b": BAttackState()
         }
         self.state = None
 
     def change_state(self, state_name):
         """Transition to a new state."""
-        print(f"Enemy changing state to {state_name}")
         if self.state is not None:
             self.state.exit(self)
         self.state = self.states[state_name]
@@ -74,7 +80,7 @@ class Enemy(Entity):
             "right": False,
             "space": False,
             "g": False,
-            "attack": False
+            "b": False
         }
 
         if self.target is None or not self.target.alive:
@@ -94,9 +100,13 @@ class Enemy(Entity):
         if self.in_air:
             return action
 
-        # Attack range
+        # Already attacking - wait
+        if self.is_attacking:
+            return action
+
+        # Attack range - trigger attack
         if distance <= self.attack_range:
-            action["attack"] = True
+            action["b"] = True
             return action
 
         # Chase target
@@ -112,6 +122,10 @@ class Enemy(Entity):
 
         return action
 
+    def is_in_attack_state(self):
+        """Check if enemy is currently attacking."""
+        return self.state and self.state.__class__.__name__ == "BAttackState"
+
     def handle_input(self, action):
         """Handle AI-generated input."""
         if action["left"]:
@@ -119,8 +133,15 @@ class Enemy(Entity):
         elif action["right"]:
             self.facing = 1
 
-        if self.alive and self.state is not None:
-            self.state.handle_action(self, action)
+        if not self.alive or self.state is None:
+            return
+
+        # Attack input (priority)
+        if action["b"]:
+            self.change_state("b")
+            return
+
+        self.state.handle_action(self, action)
 
     def update_ai(self, dt: float):
         """Update AI decision making."""
@@ -132,11 +153,6 @@ class Enemy(Entity):
 
             # Generate and apply AI input
             ai_action = self._generate_ai_input()
-
-            if ai_action["attack"]:
-                # Attack logic handled in state
-                pass
-
             self.handle_input(ai_action)
 
     def update(self, scene, dt: float):

@@ -6,7 +6,7 @@ from core.GameObject import GameObject
 # from entities.Player import Player
 import pygame as pg
 
-from entities.Player import Player
+from entities import Player, Enemy
 
 class TestPlayer(GameObject):
     def __init__(self,pos):
@@ -63,8 +63,19 @@ class GameScene(BaseScene):
 
         self.camera = Camera(self.world_width,SCREEN_HEIGHT)
         self.scroll = 0
-        # self.player = Player((SCREEN_WIDTH//2,SCREEN_HEIGHT//2))
         self.player:Player = AssetLoader.load_player()
+
+        # Spawn enemies - reuse player frames for now
+        self.enemies = []
+        enemy_data = self.player.animator.frames
+        for pos in [(400, 100), (800, 100)]:
+            enemy = Enemy(pos)
+            enemy.animator.load_frames(enemy_data)
+            enemy.rect = enemy.animator.frames["stance"][0].get_rect()
+            enemy.rect.topleft = pos
+            enemy.set_target(self.player)
+            enemy.change_state("idle")
+            self.enemies.append(enemy)
         
     def update(self,dt):
         for layer in  ["background", "world", "effects", "ui"]:
@@ -72,6 +83,22 @@ class GameScene(BaseScene):
                 if obj is not self.player:
                     obj.update(self)
         self.player.update(self,dt)
+
+        # Update enemies
+        for enemy in self.enemies:
+            enemy.update(self, dt)
+            # Enemy hit player
+            if enemy.attack_hitbox and enemy.check_hit(self.player):
+                self.player.take_damage(enemy.attack_damage)
+                enemy.attack_hitbox = None  # One hit per attack
+
+        # Player hits enemy
+        if self.player.attack_hitbox:
+            for enemy in self.enemies:
+                if self.player.check_hit(enemy):
+                    enemy.take_damage(self.player.attack_damage)
+                    self.player.attack_hitbox = None  # One hit per attack
+
         self.camera.update(self.player.rect)
     def draw(self):
         super().draw()

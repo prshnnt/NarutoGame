@@ -9,9 +9,9 @@ class Entity(ABC):
     Shared functionality: position, velocity, health, states, collision.
     """
     def __init__(self, pos):
-        self.rect = None
         self.position = pg.Vector2(pos)
         self.velocity = pg.Vector2(0, 0)
+        self.rect = pg.Rect(pos[0], pos[1], 50, 50)  # Default size until animator sets it
 
         self.in_air = True
         self.health: int = 100
@@ -19,6 +19,12 @@ class Entity(ABC):
         self.alive: bool = True
         self.facing: int = 1           # 1 = right, -1 = left
         self.dt = 0
+
+        # Attack hitbox
+        self.attack_hitbox: pg.Rect = None
+        self.attack_damage: int = 10
+        self.hitbox_duration: int = 200  # ms
+        self.hitbox_timer: float = 0
 
         # State machine
         self.states = {}
@@ -76,6 +82,7 @@ class Entity(ABC):
         self.velocity.y += GRAVITY
         self.state.update(self, dt)
         self.collide_with_platforms(scene.layers["world"])
+        self.update_hitbox(dt)
 
     def draw(self, scene):
         """Delegate drawing to animator"""
@@ -91,3 +98,27 @@ class Entity(ABC):
             if self.health <= 0:
                 self.health = 0
                 self.alive = False
+
+    def create_hitbox(self, width: int, height: int, offset_x: int = 0):
+        """Create attack hitbox in front of entity based on facing direction."""
+        if self.facing == 1:
+            hitbox_x = self.rect.right + offset_x
+        else:
+            hitbox_x = self.rect.left - width - offset_x
+
+        hitbox_y = self.rect.top + (self.rect.height - height) // 2
+        self.attack_hitbox = pg.Rect(hitbox_x, hitbox_y, width, height)
+        self.hitbox_timer = self.hitbox_duration / 1000
+
+    def update_hitbox(self, dt: float):
+        """Update hitbox timer and clear when expired."""
+        if self.attack_hitbox is not None:
+            self.hitbox_timer -= dt
+            if self.hitbox_timer <= 0:
+                self.attack_hitbox = None
+
+    def check_hit(self, target: 'Entity') -> bool:
+        """Check if attack hitbox collides with target."""
+        if self.attack_hitbox is not None and target.rect is not None:
+            return self.attack_hitbox.colliderect(target.rect)
+        return False
