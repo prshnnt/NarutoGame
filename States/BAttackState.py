@@ -10,7 +10,11 @@ class BAttackState(BaseState):
 
     def update(self, player, dt):
         if player.animator.animation_finished:
-            player.change_state("idle")
+            # Only Player has attack_queue
+            if hasattr(player, 'attack_queue') and player.attack_queue:
+                player.process_next_attack()
+            else:
+                player.change_state("idle")
 
     def handle_action(self, player, action):
         pass
@@ -25,7 +29,11 @@ class BForwardState(BaseState):
 
     def update(self, player, dt):
         if player.animator.animation_finished:
-            player.change_state("idle")
+            # Only Player has attack_queue
+            if hasattr(player, 'attack_queue') and player.attack_queue:
+                player.process_next_attack()
+            else:
+                player.change_state("idle")
 
     def handle_action(self, player, action):
         pass
@@ -40,7 +48,11 @@ class BUpState(BaseState):
 
     def update(self, player, dt):
         if player.animator.animation_finished:
-            player.change_state("idle")
+            # Only Player has attack_queue
+            if hasattr(player, 'attack_queue') and player.attack_queue:
+                player.process_next_attack()
+            else:
+                player.change_state("idle")
 
     def handle_action(self, player, action):
         pass
@@ -55,7 +67,11 @@ class BDownState(BaseState):
 
     def update(self, player, dt):
         if player.animator.animation_finished:
-            player.change_state("idle")
+            # Only Player has attack_queue
+            if hasattr(player, 'attack_queue') and player.attack_queue:
+                player.process_next_attack()
+            else:
+                player.change_state("idle")
 
     def handle_action(self, player, action):
         pass
