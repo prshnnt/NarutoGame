@@ -89,8 +89,12 @@ class GameScene(BaseScene):
             enemy.update(self, dt)
             # Enemy hit player
             if enemy.attack_hitbox and enemy.check_hit(self.player):
-                self.player.take_damage(enemy.attack_damage)
                 enemy.attack_hitbox = None  # One hit per attack
+                # Interrupt attack if in attack state
+                if self.player.is_in_attack_state():
+                    self.player.on_hit_interrupt()
+                else:
+                    self.player.take_damage(enemy.attack_damage)
 
         # Player hits enemy
         if self.player.attack_hitbox:
