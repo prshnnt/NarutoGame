@@ -1,5 +1,4 @@
 import pygame as pg
-import sys
 from Scenes.Base import BaseScene
 from Scenes.MenuScene import MenuScene
 from Scenes.GameScene import GameScene
