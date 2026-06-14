@@ -4,7 +4,7 @@ from Scenes.MenuScene import MenuScene
 from Scenes.GameScene import GameScene
 from Scenes.OptionScene import OptionScene
 from core.config import *
-
+import sys
 class Game:
     def __init__(self):
         pg.init()
