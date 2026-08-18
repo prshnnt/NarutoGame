@@ -2,7 +2,6 @@ import pygame as pg
 # from Scenes.Base import BaseScene
 from core.config import *
 from core.GameObject import GameObject
-from pydantic import BaseModel
 # from entities.Player import Player
 
 class FrameState(pg.sprite.Sprite):
