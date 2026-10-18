@@ -1,4 +1,4 @@
-from States.Base import BaseState
+from .Base import BaseState
 
 class GuardState(BaseState):
     def enter(self, player):

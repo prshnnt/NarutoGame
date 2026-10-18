@@ -1,4 +1,4 @@
-from States.Base import BaseState
+from .Base import BaseState
 from core.config import *
 import pygame as pg
 
